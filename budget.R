@@ -73,3 +73,33 @@ lstato<-levels(bdj$stato)
 staimp<-sapply(lstato, function(x) sum(bdj$importo[bdj$stato==x]))
 
 barplot(staimp)
+
+##################################################
+
+bdj<-bdj[order(bdj$spesa),]
+
+p1<-  ggplot(data=bdj, aes(x=dove, y=importo, fill = spesa)) + 
+  geom_bar(stat="identity") + 
+  ggtitle("spesa per ubicazione")
+
+p2<-  ggplot(data=bdj, aes(x=dove, y=importo, fill = spesa)) + 
+  geom_bar(stat="identity")  +
+  facet_wrap( ~ stato, ncol=1 ) + 
+  ggtitle("spesa per ubicazione")
+
+bdj<-bdj[order(bdj$stato),]
+
+p3<-  ggplot(data=bdj, aes(x=dove, y=importo, fill = stato)) + 
+  geom_bar(stat="identity") + 
+  ggtitle("spesa per ubicazione")
+
+
+jpeg("budget3.jpg",width = 600, height = 900, units = "px")
+
+vp.setup(3,1)
+# plot graphics into layout
+print(p1, vp=vp.layout(1,1))
+print(p2, vp=vp.layout(2,1))
+print(p3, vp=vp.layout(3,1))
+
+dev.off()
